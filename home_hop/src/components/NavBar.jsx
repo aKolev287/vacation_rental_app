@@ -1,14 +1,18 @@
-import { FaBars, FaRegUser, FaMagnifyingGlass, FaBarsStaggered } from 'react-icons/fa6'
-import { useState } from 'react';
+import { FaBars, FaRegUser, FaMagnifyingGlass, FaBarsStaggered, FaDoorOpen } from 'react-icons/fa6'
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import MiniBar from './MiniBar';
+import { useAuth } from "../hooks/authContext";
 import { Link } from 'react-router-dom';
+
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
-
+  const { isAuthenticated, user, isLoading, checkAuthentication } = useAuth();
   const toggleMenu = () => {
     setIsOpen(!isOpen); 
   };
+  useEffect(() => {
+    checkAuthentication();
+  },[])
   return (
     <>
       <div className="border-[1px] h-20 flex justify-between items-center px-3">
@@ -22,10 +26,16 @@ const NavBar = () => {
         </button>
       </div>
       <div className='flex items-center'>
-        {/* TODO: Add condition */}
-        <Link className='mr-2 p-2 border-[1px] rounded-full border-gray-300 hover:shadow-lg hover:bg-gray-100 cursor-pointer' to="/register">
-          <FaRegUser size="23" />
-        </Link>
+        {!isAuthenticated ? 
+              <Link className='mr-2 p-2 border-[1px] rounded-full border-gray-300 hover:shadow-lg hover:bg-gray-100 cursor-pointer' to="/register">
+                <FaDoorOpen size="23" />
+              </Link>
+              :
+              <Link className='mr-2 p-2 border-[1px] rounded-full border-gray-300 hover:shadow-lg hover:bg-gray-100 cursor-pointer' to="/profile">
+                <FaRegUser size="23" />
+              </Link>
+        }
+
         <motion.button
             onClick={toggleMenu}
             className={`p-2 border-[1px] rounded-full border-gray-300 hover:shadow-md hover:bg-gray-100 cursor-pointer`}
@@ -59,7 +69,7 @@ const NavBar = () => {
         >
           <BurgerMenu />
         </motion.div>)}
-    <MiniBar />
+    
     </>
 
   )

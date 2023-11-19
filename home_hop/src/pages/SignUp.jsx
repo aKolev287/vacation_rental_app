@@ -1,14 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState} from 'react';
 import { FaUnlock, FaEnvelope, FaEye, FaEyeSlash, FaUser } from "react-icons/fa6";
 import { Link } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [seePasswords, setSeePasswords] = useState("password");
-  
+  const navigate = useNavigate();
 
   const checkPassword = async () => {
     if (password === confirmPassword) {
@@ -29,6 +29,7 @@ const SignUp = () => {
   
     if (response.ok) {
       console.log("Registration successful");
+      navigate("/login");
       
     } else {
       console.error("Registration failed");

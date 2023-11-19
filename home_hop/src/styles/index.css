@@ -2,3 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+.card-shadow {
+    -webkit-box-shadow: 0 5.5px 15px -1px #d2d2d2;
+    -moz-box-shadow: 0 5.5px 15px -1px #d2d2d2;
+    box-shadow: 0 5.5px 15px -1px #d2d2d2;
+}

@@ -3,7 +3,8 @@ import NavBar from './components/NavBar'
 import HomePage from './pages/HomePage'
 import SignIn from './pages/SignIn'
 import SignUp from './pages/SignUp'
-
+import ProfilePage from './pages/ProfilePage'
+import EditProfile from './pages/EditProfile'
 function App() {
   
 
@@ -15,7 +16,8 @@ function App() {
           <Route path='/' element={<HomePage />}/>
           <Route path='/register' element={<SignUp />}/>
           <Route path='/login' element={<SignIn />}/>
-          {/* TODO: Add profile route and page */}
+          <Route path='/profile' element={<ProfilePage />}/>
+          <Route path='/profile_edit' element={<EditProfile />}/>
         </Routes>
       </Router>
     </>
