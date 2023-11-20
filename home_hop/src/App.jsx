@@ -5,6 +5,7 @@ import SignIn from './pages/SignIn'
 import SignUp from './pages/SignUp'
 import ProfilePage from './pages/ProfilePage'
 import EditProfile from './pages/EditProfile'
+import UserPage from './pages/Userpage'
 function App() {
   
 
@@ -18,6 +19,7 @@ function App() {
           <Route path='/login' element={<SignIn />}/>
           <Route path='/profile' element={<ProfilePage />}/>
           <Route path='/profile_edit' element={<EditProfile />}/>
+          <Route path='/profile/:username' element={<UserPage />}/>
         </Routes>
       </Router>
     </>

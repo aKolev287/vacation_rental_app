@@ -2,13 +2,13 @@ import jwt
 import datetime
 from django.shortcuts import render
 from rest_framework import generics, status
-from .models import User
+from .models import User, Host
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.decorators import api_view, permission_classes
-from .serializers import UserSerializer, UserUpdateSerializer
+from .serializers import UserSerializer, UserUpdateSerializer, HostSerializer
 
 
 class RegisterView(APIView):
@@ -127,6 +127,21 @@ class UserListView(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+class HostStatsView(APIView):
+    def get(self, request):
+        token = request.COOKIES.get('jwt')
+
+        if not token:
+            raise AuthenticationFailed('Unauthenticated!')
+
+        try:
+            payload = jwt.decode(token, 'secret', algorithms=['HS256'])
+        except jwt.ExpiredSignatureError:
+            raise AuthenticationFailed('Unauthenticated!')
+
+        user = Host.objects.filter(user_id=payload['id']).first()
+        serializer = HostSerializer(user)
+        return Response(serializer.data)
 
 @api_view(['GET'])
 def profile_details(request, username):
@@ -136,7 +151,24 @@ def profile_details(request, username):
         r_user = User.objects.filter(id=payload['id']).first()
         user = User.objects.get(username=username)
         print(f"user: {r_user}")
+        
         serializer = UserSerializer(user)
+        return Response(serializer.data)
+    except User.DoesNotExist:
+        return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['GET'])
+def host_details(request, username):
+    try:
+        token = request.COOKIES.get('jwt')
+        payload = jwt.decode(token, 'secret', algorithms=['HS256'])
+        r_user = User.objects.filter(id=payload['id']).first()
+        print(f"user: {r_user}")
+
+        z_user = User.objects.filter(username=username).first() 
+        user = Host.objects.get(user=z_user.id)
+
+        serializer = HostSerializer(user)
         return Response(serializer.data)
     except User.DoesNotExist:
         return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)

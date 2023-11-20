@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import RegisterView, LoginView, UserView, LogoutView, UserListView, UpdateView, DeleteView, profile_details
+from .views import RegisterView, LoginView, UserView, LogoutView, UserListView, UpdateView, DeleteView,HostStatsView ,profile_details, host_details
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -16,7 +16,11 @@ urlpatterns = [
 
     # Miscellaneous
     path('users/', UserListView.as_view()),
-    path('user/<slug:username>/', profile_details),
+    path('user/<str:username>/', profile_details),
+
+    path('host_stats/', HostStatsView.as_view()),
+    path('host_stats/<str:username>/', host_details),
+
 ]
 
 

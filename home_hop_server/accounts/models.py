@@ -14,10 +14,9 @@ class User(AbstractUser):
     speaks = models.CharField(max_length=255, blank=True)
     role = models.CharField(max_length=50, choices=[(
         'Host', 'Host'), ('User', 'User')], default='User')
-
-
-class HostProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    
+class Host(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     rating = models.FloatField()
-    reviews = models.TextField()
+    reviews = models.IntegerField()
     years_hosting = models.PositiveIntegerField()

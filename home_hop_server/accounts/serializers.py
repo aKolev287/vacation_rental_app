@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User, HostProfile
+from .models import User, Host
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -43,7 +43,7 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         }
 
 
-class HostProfileSerializer(serializers.ModelSerializer):
+class HostSerializer(serializers.ModelSerializer):
     class Meta:
-        model = HostProfile
+        model = Host
         fields = "__all__"
