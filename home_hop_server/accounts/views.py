@@ -18,27 +18,9 @@ class RegisterView(APIView):
         serializer.save()
         return Response(serializer.data)
 
-class DeleteView(APIView):
-    def delete(self, request):
-        token = request.COOKIES.get('jwt')
-        if not token:
-            raise AuthenticationFailed('Unauthenticated!')
-
-        try:
-            payload = jwt.decode(token, 'secret', algorithms=['HS256'])
-        except jwt.ExpiredSignatureError:
-            raise AuthenticationFailed('Unauthenticated!')
-
-        user = User.objects.filter(id=payload['id']).first()
-        if not user:
-            raise AuthenticationFailed('User not found!')
-        
-        user.delete()
-
-        return Response({'message': 'User deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
 
 class UpdateView(APIView):
-    
+
     def patch(self, request):
         token = request.COOKIES.get('jwt')
         if not token:
@@ -48,13 +30,15 @@ class UpdateView(APIView):
             payload = jwt.decode(token, 'secret', algorithms=['HS256'])
         except jwt.ExpiredSignatureError:
             raise AuthenticationFailed('Unauthenticated!')
-        
+
         user = User.objects.filter(id=payload['id']).first()
-        serializer = UserUpdateSerializer(user, data=request.data, partial=True)
+        serializer = UserUpdateSerializer(
+            user, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
         return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 class LoginView(APIView):
     def post(self, request):
@@ -103,6 +87,30 @@ class UserView(APIView):
         user = User.objects.filter(id=payload['id']).first()
         serializer = UserSerializer(user)
         return Response(serializer.data)
+
+
+class DeleteView(APIView):
+    def delete(self, request):
+        token = request.COOKIES.get('jwt')
+        if not token:
+            raise AuthenticationFailed('Unauthenticated!')
+
+        try:
+            payload = jwt.decode(token, 'secret', algorithms=['HS256'])
+        except jwt.ExpiredSignatureError:
+            raise AuthenticationFailed('Unauthenticated!')
+
+        user = User.objects.filter(id=payload['id']).first()
+        if not user:
+            raise AuthenticationFailed('User not found!')
+
+        user.delete()
+        response = Response()
+        response.delete_cookie('jwt')
+        response.data = {
+            'message': 'User deleted successfully'
+        }
+        return response
 
 
 class LogoutView(APIView):

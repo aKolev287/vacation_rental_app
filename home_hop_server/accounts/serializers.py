@@ -6,10 +6,10 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
-                'id', 'username', 'email', 'password', 
-                'first_name', 'last_name', 'bio', 
-                'pfp', 'lives_in', 'works_in', 'speaks', 'role'
-                  ]
+            'id', 'username', 'email', 'password',
+            'first_name', 'last_name', 'bio',
+            'pfp', 'lives_in', 'works_in', 'speaks', 'role'
+        ]
         extra_kwargs = {
             'password': {'write_only': True},
             'bio': {'required': False},
@@ -27,8 +27,11 @@ class UserSerializer(serializers.ModelSerializer):
             instance.set_password(password)
         instance.save()
         return instance
-    
+
+
 class UserUpdateSerializer(serializers.ModelSerializer):
+    pfp = serializers.ImageField(required=False)
+
     class Meta:
         model = User
         fields = [
@@ -37,7 +40,8 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         ]
         extra_kwargs = {
             'password': {'write_only': True},
-        }    
+        }
+
 
 class HostProfileSerializer(serializers.ModelSerializer):
     class Meta:

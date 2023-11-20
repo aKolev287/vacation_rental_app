@@ -3,12 +3,11 @@ import { useAuth } from "../hooks/authContext";
 import { FaStar, FaSuitcase, FaGlobe, FaBookAtlas, FaGear  } from "react-icons/fa6";
 import { Link, Navigate } from "react-router-dom"
 const ProfilePage = () => {
-  const { isAuthenticated, user, isLoading, checkAuthentication } = useAuth();
+  const { isAuthenticated, user, checkAuthentication } = useAuth();
   useEffect(() => {
 
     checkAuthentication();
   }, []);
-  // TODO: fix a bug where it doesn't update the state of the deleted profile
   return (
 <>
     {
