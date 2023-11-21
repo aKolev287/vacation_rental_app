@@ -1,5 +1,6 @@
 /db.sqlite3
 /accounts/migrations
+/posts/migrations
 /accounts/__pycache__
 /config
 /media/profile_pics

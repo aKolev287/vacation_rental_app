@@ -6,6 +6,16 @@ const UserPage = () => {
   const { username } = useParams()
   const [user, setUser] = useState(null);
   const [stats, setStats] = useState(null);
+  const fetchStats = async() => {
+    const response_stats = await fetch(`http://127.0.0.1:8000/accounts/host_stats/${username}/`,    {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include"
+    });
+    const stats_data = await response_stats.json();
+    setStats(stats_data);
+  }
   useEffect(() => {
     const fetchUserProfile = async () => {
       const response = await fetch(`http://127.0.0.1:8000/accounts/user/${username}/`,    {
@@ -14,20 +24,19 @@ const UserPage = () => {
       },
       credentials: "include"
     });
-    const response_stats = await fetch(`http://127.0.0.1:8000/accounts/host_stats/${username}/`,    {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include"
-    });
-      const stats_data = await response_stats.json(); 
+
       const data = await response.json();
       setUser(data);
-      setStats(stats_data);
     };
-  
+
     fetchUserProfile();
   }, [username]);
+  useEffect(() => {
+    if (user?.role === "Host") {
+      fetchStats();
+    }
+  }, [])
+
   return (
     <div className="grid grid-cols-2 max-sm:grid-cols-1 grid-rows-1">
     { user ? 
@@ -47,18 +56,25 @@ const UserPage = () => {
             <div>
                 <p className='text-2xl font-bold'>{user.role}</p>
                 <p className='text-base'>Role</p>
+                {stats ? 
+                <div>
+                    <div className='border-b-[1px] rounded-full border-gray-400 my-2'></div>
+                     <div className='flex items-center'>
+                         <p className='text-2xl font-bold mr-1'>{stats.rating}</p> <FaStar color='orange' size="17" />
+                     </div>
+                     <p className='text-base'>Rating</p>
+                     <div className='border-b-[1px] rounded-full border-gray-400 my-2'></div>
+                     <p className='text-2xl font-bold'>{stats.reviews}</p>
+                     <p className='text-base'>Reviews</p>
+                     <div className='border-b-[1px] rounded-full border-gray-400 my-2'></div>
+                     <p className='text-2xl font-bold'>{stats.years_hosting}</p>
+                     <p className='text-base'>Years hosting</p>
+                </div>
+ 
+                  :
+                  null
+              }
 
-                 <div className='border-b-[1px] rounded-full border-gray-400 my-2'></div>
-                 <div className='flex items-center'>
-                     <p className='text-2xl font-bold mr-1'>{stats.rating}</p> <FaStar color='orange' size="17" />
-                 </div>
-                 <p className='text-base'>Rating</p>
-                 <div className='border-b-[1px] rounded-full border-gray-400 my-2'></div>
-                 <p className='text-2xl font-bold'>{stats.reviews}</p>
-                 <p className='text-base'>Reviews</p>
-                 <div className='border-b-[1px] rounded-full border-gray-400 my-2'></div>
-                 <p className='text-2xl font-bold'>{stats.years_hosting}</p>
-                 <p className='text-base'>Years hosting</p>
             </div>
 
 

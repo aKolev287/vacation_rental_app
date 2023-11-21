@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'accounts',
     'rest_framework',
     'corsheaders',
+    'posts',
 ]
 
 AUTH_USER_MODEL = "accounts.User"
