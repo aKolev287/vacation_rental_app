@@ -31,7 +31,7 @@ def create_post(request):
         # set to mutable
         data._mutable = True
         # сhange the values you want
-        data['user'] = user.id
+        data['user_id'] = user.id
         data['by_user'] = user.username
         # set mutable flag back
         data._mutable = _mutable

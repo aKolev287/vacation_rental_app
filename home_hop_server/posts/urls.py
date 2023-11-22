@@ -1,7 +1,8 @@
-from django.urls import path
+from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from .views import create_post, PostListView #PostListCreateView PostCreateView
+
 
 urlpatterns = [
     # Basic CRUD for posts

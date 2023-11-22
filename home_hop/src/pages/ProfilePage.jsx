@@ -33,6 +33,7 @@ const ProfilePage = () => {
         isAuthenticated ?
         <div className="grid grid-cols-2 max-sm:grid-cols-1 grid-rows-1">
         { user ? 
+        <div className='flex flex-col'>
         <div key={user.id} className='flex justify-center ml-80 max-sm:ml-0 mt-10'>
             <div className='h-68 max-h-80 w-96 max-sm:w-80 rounded-xl p-5 card-shadow grid grid-cols-2'>
             
@@ -69,16 +70,36 @@ const ProfilePage = () => {
                 </div>
             </div>
             :
+            <div>
+            <Link to="/profile_edit">
+            <FaGear className='absolute ml-[8rem] max-sm:ml-[6rem]' size="22" />
+        </Link>
             <div className="ml-10 flex flex-col justify-center">
                 <p className='text-2xl font-bold'>{user.role}</p>
                 <p className='text-base'>Role</p>
             </div>
+            </div>
+
                                 }
             </div>
         </div>
+        <div className='h-full flex justify-center ml-80 max-sm:ml-0 mt-10 '>
+        <Link className='' to="/create_offer">
+        <div className='h-68 max-h-80 w-96 max-sm:w-80 rounded-xl p-5 card-shadow text-center bg-gray-800 hover:bg-gray-600'> 
+            
+                <h3 className='font-bold text-xl text-white'>
+                    Create a new offer
+                </h3>
+           
+        </div>
+        </Link>
+        </div>
+        </div>
+
             :
             null
         }
+
 
         {   user ?
                 <div className='flex justify-start flex-col px-10 mt-10'> 
