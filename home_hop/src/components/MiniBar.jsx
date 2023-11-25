@@ -3,7 +3,7 @@ import { FaBuilding, FaHouseChimney, FaIgloo, FaLandmarkFlag, FaMountain, FaSeed
 const MiniBar = () => {
   return (
     <div className='my-2 left-0 h-[4rem] text-center items-center p-2'>
-      <div className='flex justify-center'>
+      <div className='flex justify-center '>
       <div className="flex flex-col items-center mx-5 hover:border-b-2 border-black">
           <FaHouseChimney className="" size="23" />
           <p>Houses</p>

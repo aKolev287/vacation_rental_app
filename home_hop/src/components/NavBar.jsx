@@ -77,8 +77,8 @@ const NavBar = () => {
 
 const BurgerMenu = () => {
   return (
-    <div className='border-b-[1px] left-0 h-full text-center items-center p-2'>
-      <motion.div className='flex justify-center ' animate={{ scale: 1.1 }}>
+    <div className='border-b-[1px] left-0 h-full text-center items-center px-96 py-2'>
+      <motion.div className='flex justify-center' animate={{ scale: 1.1 }}>
         <p className='mx-2 text-lg'>News</p>
         <p className='mx-2 text-lg'>About</p>
         <p className='mx-2 text-lg'>New Features</p>

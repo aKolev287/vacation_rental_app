@@ -6,8 +6,7 @@ class Tag(models.Model):
     name = models.CharField(max_length=50)
     def __str__(self):
         return self.name
-    
-# TODO: finish the model.
+
 class Post(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField(default=None, blank=True)

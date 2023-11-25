@@ -7,6 +7,8 @@ import ProfilePage from './pages/ProfilePage'
 import EditProfile from './pages/EditProfile'
 import UserPage from './pages/Userpage'
 import CreatePost from './pages/CreatePost'
+import PostDetails from './pages/PostDetails'
+
 function App() {
   
 
@@ -22,6 +24,7 @@ function App() {
           <Route path='/profile_edit' element={<EditProfile />}/>
           <Route path='/profile/:username' element={<UserPage />}/>
           <Route path='/create_offer' element={<CreatePost />}/>
+          <Route path='/rooms/:id' element={<PostDetails />}/>
         </Routes>
       </Router>
     </>
