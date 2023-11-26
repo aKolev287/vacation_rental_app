@@ -1,8 +1,8 @@
 import jwt
 import datetime
 from rest_framework import generics, status
-from .models import Post, User
-from .serializers import PostSerializer
+from .models import Post, User, Tag, Comment
+from .serializers import PostSerializer, CommentSerializer, TagSerializer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.exceptions import AuthenticationFailed
@@ -19,9 +19,10 @@ class PostListView(generics.ListAPIView):
 def post_details(request, id):
     try:
         post = Post.objects.get(id=id)
-        print(f'post: {post}')
+        print(f'post: {post.id}')
         serializer = PostSerializer(post)
         return Response(serializer.data)
+    
     except post.DoesNotExist:
         return Response({'status': '404 Not Found'}, status=status.HTTP_404_NOT_FOUND)
 
