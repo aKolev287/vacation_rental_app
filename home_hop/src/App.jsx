@@ -5,7 +5,7 @@ import SignIn from './pages/SignIn'
 import SignUp from './pages/SignUp'
 import ProfilePage from './pages/ProfilePage'
 import EditProfile from './pages/EditProfile'
-import UserPage from './pages/Userpage'
+import UserPage from './pages/UserPage'
 import CreatePost from './pages/CreatePost'
 import PostDetails from './pages/PostDetails'
 

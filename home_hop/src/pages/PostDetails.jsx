@@ -1,26 +1,29 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 import { Link, useParams } from "react-router-dom";
 import { FaLocationDot, FaStar, FaMinus, FaPlus, FaCheck } from "react-icons/fa6";
+import Comments from '../components/Comments';
+import PostComment from '../components/PostComment';
+
 const PostDetails = () => {
   const { id } = useParams();
   const [post, setPost] = useState({});
 
   const [guests, setGuests] = useState(1);
+  const fetchData = async () => {
+    const response_stats = await fetch(`http://127.0.0.1:8000/posts/view/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include"
+    });
+    const data = await response_stats.json();
+    setPost(data);
+  }
 
   useEffect(() => {
-    const fetchData = async () => {
-      const response_stats = await fetch(`http://127.0.0.1:8000/posts/view/${id}`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include"
-      });
-      const data = await response_stats.json();
-      setPost(data);
-    }
     fetchData();
-  }, [id])
-  console.log(post?.comments?.map(cmt =>( cmt.id, cmt.user?.username, cmt.comment)))
+  }, [id]);
+
   return (
     <div className='grid grid-cols-1 px-96 max-sm:p-3'>
 
@@ -78,18 +81,9 @@ const PostDetails = () => {
         </div>
 
       </div>
-      <div>
-        {post?.comments?.map(cmt =>(
-          <div key={cmt.id}>
-          <img className='w-10 h-10' src={`http://127.0.0.1:8000/accounts${cmt.user.pfp}`} alt="" />
-          <p>{cmt.user.username}</p>
-          <p>{cmt.review}</p>
-          <p>{cmt.comment}</p> 
-          </div> 
-
-          ))}
-      </div>
-
+      <div className='border-b-[1px] my-5' />
+      <PostComment post={post.id} fn={fetchData}/>
+      <Comments post={post} />
 
     </div>
   )

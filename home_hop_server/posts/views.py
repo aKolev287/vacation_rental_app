@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 import jwt
 import datetime
 from rest_framework import generics, status
@@ -25,6 +26,34 @@ def post_details(request, id):
     
     except post.DoesNotExist:
         return Response({'status': '404 Not Found'}, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['GET', 'POST'])
+def comment(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)  # Use get_object_or_404 to handle Post not found case
+
+    if request.method == 'GET':
+        comments = Comment.objects.filter(post=post)
+        serializer = CommentSerializer(comments, many=True)
+        return Response(serializer.data)
+
+    elif request.method == 'POST':
+        token = request.COOKIES.get('jwt')
+        try:
+            payload = jwt.decode(token, 'secret', algorithms=['HS256'])
+            user = User.objects.get(id=payload['id'])
+        except jwt.ExpiredSignatureError:
+            return Response({"error": "Token has expired"}, status=status.HTTP_401_UNAUTHORIZED)
+        except jwt.InvalidTokenError:
+            return Response({"error": "Invalid token"}, status=status.HTTP_401_UNAUTHORIZED)
+        except User.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = CommentSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(post=post, user=user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
 def create_post(request):

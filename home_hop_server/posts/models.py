@@ -13,7 +13,7 @@ class Post(models.Model):
 
     image = models.ImageField(upload_to='post_pics/', blank=True, default='default/te.jpg')
     guests = models.IntegerField(default=1)
-    rating = models.IntegerField(default=0)
+    rating = models.FloatField(default=0)
 
     tags = models.ManyToManyField(Tag, blank=True)
 
