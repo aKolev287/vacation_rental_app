@@ -9,11 +9,11 @@ const Comments = ({ post }) => {
         key={cmt.id}
         className="bg-white  flex flex-col gap-2"
       >
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 ">
           <img
             src={`http://127.0.0.1:8000/accounts${cmt.user.pfp}`}
             alt={cmt.user.username}
-            className="w-10 h-10 rounded-full"
+            className="w-10 h-10 rounded-full object-cover"
           />
           <p className="font-bold">{cmt.user.username}</p>
         </div>

@@ -3,8 +3,13 @@ import { Link, useParams } from "react-router-dom";
 import { FaLocationDot, FaStar, FaMinus, FaPlus, FaCheck } from "react-icons/fa6";
 import Comments from '../components/Comments';
 import PostComment from '../components/PostComment';
-
 const PostDetails = () => {
+
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [price, setPrice] = useState(0);
+  const [message, setMessage] = useState("Cost:")
+
   const { id } = useParams();
   const [post, setPost] = useState({});
 
@@ -19,11 +24,33 @@ const PostDetails = () => {
     const data = await response_stats.json();
     setPost(data);
   }
+  // Parse date strings into Date objects
+  const date1 = new Date(startDate);
+  const date2 = new Date(endDate);
 
+  // Calculate the difference in milliseconds
+  const timeDifference = date2 - date1;
+
+  // Convert milliseconds to days
+  const daysDifference = timeDifference / (1000 * 60 * 60 * 24);
+  const total = daysDifference * (post.price)
+
+  
+  console.log(`The difference is ${daysDifference} days.`);
   useEffect(() => {
     fetchData();
-  }, [id]);
 
+  }, [id])
+  useEffect(() => {
+    console.log(startDate)
+    console.log(endDate)
+    console.log(daysDifference);
+    console.log(post.price)
+    if (total !== isNaN){
+      setPrice(total);
+    }
+    console.log(price)
+  })
   return (
     <div className='grid grid-cols-1 px-96 max-sm:p-3'>
 
@@ -59,9 +86,9 @@ const PostDetails = () => {
           <p className='text-xl font-semibold ml-2'>{post.price}$/night</p>
           <div className='p-1 my-4'>
           <div className="flex items-center">
-              <input name="start" type="date" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="Select date start" />
+              <input name="start" type="date" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="Select date start" onChange={(e) => setStartDate(e.target.value) } />
             <span className="mx-4 text-gray-500">to</span>
-              <input name="end" type="date" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full  p-2.5 " placeholder="Select date end" />
+              <input name="end" type="date" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full  p-2.5 " placeholder="Select date end" onChange={(e) => setEndDate(e.target.value)}/>
           </div>
           <div className='flex justify-between items-center my-5 '>
             <p className=' font-semibold'>Guests: </p>

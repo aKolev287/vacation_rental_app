@@ -1,8 +1,10 @@
 import { FaStar } from "react-icons/fa6";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-
+import { useAuth } from "../hooks/authContext";
+import { Link } from "react-router-dom";
 const PostComment = ({ post, fn }) => {
+  const { isAuthenticated, user, checkAuthentication } = useAuth();
   const [review, setReview] = useState(0);
   const [comment, setComment] = useState("");
   const handleStarClick = (index) => {
@@ -34,11 +36,15 @@ const PostComment = ({ post, fn }) => {
     setComment("");
     setReview(0);
   }
-
+  useEffect(() => {
+    checkAuthentication();
+  }, [])
 
   return (
     <div className="flex flex-col gap-4 rounded-lg shadow-lg border-[1px] p-4">
       <h2 className="font-semibold text-xl">Leave a review</h2>
+      {user ? 
+      <>
       <div className="flex items-center gap-1">
         {[...Array(5)].map((_, index) => {
           const isStarSelected = index + 1 <= review;
@@ -67,6 +73,13 @@ const PostComment = ({ post, fn }) => {
         <button className="bg-red-600 text-white py-2 px-5 rounded-xl font-semibold" onClick={cancel}>Cancel</button>
         <button className="bg-gray-900 text-white py-2 px-5 rounded-xl font-semibold" onClick={sendReview}>Post</button>
       </div>
+      </>
+      :
+        <>
+          <p className="text-lg font-semibold">Please <Link className="text-gray-500 underline">Login</Link> or <Link className="text-gray-500 underline">Sign up</Link> to leave reviews</p>
+        </>
+    }
+
 
     </div>
   );

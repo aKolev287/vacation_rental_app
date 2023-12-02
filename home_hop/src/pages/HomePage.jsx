@@ -46,13 +46,14 @@ const HomePage = () => {
 //  Post by {post.by_user}
 //</Link>
   return (
+    
     <div>
       <MiniBar />
       <div className="grid grid-cols-5 max-md:grid-cols-3 max-md:gap-96 max-sm:grid-cols-1 max-sm:gap-5">
       {posts.map((post) => (
         <Link key={post.id} to={`http://localhost:5173/rooms/${post.id}`} >
-        <div  className="border-b-[1px] border-x-[1px] rounded-xl shadow-lg flex flex-col w-[20rem] mx-8 mt-10">
-          <img className="w-full h-60 object-cover rounded-lg" src={post.image} alt="" />
+        <div  className="border-b-[1px] border-x-[1px] rounded-xl shadow-lg hover:shadow-xl flex flex-col w-[20rem] mx-8 mt-10">
+          <img className="w-full h-60 object-cover rounded-lg" src={post.image} srcSet="" alt="" />
           <div className="p-2">
             <div className="flex justify-between pr-2 mt-2">
               <div className="flex items-center text-lg ">

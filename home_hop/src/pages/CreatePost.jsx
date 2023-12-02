@@ -6,6 +6,10 @@ import {
   FaPeopleRoof,
   FaDollarSign,
   FaLocationDot,
+  FaBed,
+  FaToiletPaper,
+  FaRegGem
+
 } from "react-icons/fa6";
 import { useAuth } from "../hooks/authContext";
 import { Navigate, useNavigate } from "react-router-dom";
@@ -18,6 +22,10 @@ const CreatePost = () => {
   const [guests, setGuests] = useState(0);
   const [location, setLocation] = useState("");
   const [price, setPrice] = useState("");
+  const [bathrooms, setBathrooms] = useState("")
+  const [bedrooms, setBedrooms] = useState("")
+  const [beds, setBeds] = useState("")
+  const [amenities, setAmenities] = useState("")
 
   const navigate = useNavigate();
 
@@ -33,6 +41,11 @@ const CreatePost = () => {
     formData.append("guests", guests);
     formData.append("location", location);
     formData.append("price", price);
+    formData.append("bathrooms", bathrooms)
+    formData.append("bedrooms", bedrooms)
+    formData.append("beds", beds)
+    formData.append("amenities", amenities)
+    
     if (image !== null && image instanceof File) {
         formData.append("image", image);
       }
@@ -68,7 +81,7 @@ const CreatePost = () => {
                   className="appearance-none border pl-12 border-gray-100 shadow-sm focus:shadow-md focus:placeholder-gray-600  transition  rounded-md w-full py-3 text-gray-600 leading-tight focus:outline-none focus:ring-gray-600 focus:shadow-outline"
                   type="text"
                   placeholder="Title"
-                  onChange={(e) => setTitle(e)}
+                  onChange={(e) => setTitle(e.target.value)}
                 />
                 <div className="absolute left-0 inset-y-0 flex items-center">
                   <FaHeading className="ml-3" color="gray" size="20" />
@@ -118,6 +131,52 @@ const CreatePost = () => {
                   onChange={(e) => setLocation(e.target.value)}
                 />
               </div>
+
+              <div className="relative mt-3">
+                <div className="absolute left-0 inset-y-0 flex items-center">
+                  <FaToiletPaper className="ml-3" color="gray" size="20" />
+                </div>
+                <input
+                  className="appearance-none border pl-12 border-gray-100 shadow-sm focus:shadow-md focus:placeholder-gray-600  transition  rounded-md w-full py-3 text-gray-600 leading-tight focus:outline-none focus:ring-gray-600 focus:shadow-outline"
+                  type="text"
+                  placeholder="Bathrooms"
+                  onChange={(e) => setBathrooms(e.target.value)}
+                />
+              </div>
+              <div className="relative mt-3">
+                <div className="absolute left-0 inset-y-0 flex items-center">
+                  <FaBed className="ml-3" color="gray" size="20" />
+                </div>
+                <input
+                  className="appearance-none border pl-12 border-gray-100 shadow-sm focus:shadow-md focus:placeholder-gray-600  transition  rounded-md w-full py-3 text-gray-600 leading-tight focus:outline-none focus:ring-gray-600 focus:shadow-outline"
+                  type="text"
+                  placeholder="Bedrooms"
+                  onChange={(e) => setBedrooms(e.target.value)}
+                />
+              </div>
+              <div className="relative mt-3">
+                <div className="absolute left-0 inset-y-0 flex items-center">
+                  <FaBed className="ml-3" color="gray" size="20" />
+                </div>
+                <input
+                  className="appearance-none border pl-12 border-gray-100 shadow-sm focus:shadow-md focus:placeholder-gray-600  transition  rounded-md w-full py-3 text-gray-600 leading-tight focus:outline-none focus:ring-gray-600 focus:shadow-outline"
+                  type="text"
+                  placeholder="Beds"
+                  onChange={(e) => setBeds(e.target.value)}
+                />
+              </div>
+              <div className="relative mt-3">
+                <div className="absolute left-0 inset-y-0 flex items-center">
+                  <FaRegGem className="ml-3" color="gray" size="20" />
+                </div>
+                <input
+                  className="appearance-none border pl-12 border-gray-100 shadow-sm focus:shadow-md focus:placeholder-gray-600  transition  rounded-md w-full py-3 text-gray-600 leading-tight focus:outline-none focus:ring-gray-600 focus:shadow-outline"
+                  type="text"
+                  placeholder="Amenities"
+                  onChange={(e) => setAmenities(e.target.value)}
+                />
+              </div>
+
               <div className="relative mt-3">
                 <div className="absolute left-0 inset-y-0 flex items-center">
                   <FaMessage className="ml-3" color="gray" size="20" />

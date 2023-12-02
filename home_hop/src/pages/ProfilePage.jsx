@@ -3,30 +3,47 @@ import { useAuth } from "../hooks/authContext";
 import { FaStar, FaSuitcase, FaGlobe, FaBookAtlas, FaGear  } from "react-icons/fa6";
 import { Link, Navigate } from "react-router-dom"
 const ProfilePage = () => {
-  const { isAuthenticated, user, checkAuthentication } = useAuth();
-  const [hostStats, setHostStats] = useState({});
-
-  const host = async () => {
-    try {
-        const response = await fetch("http://127.0.0.1:8000/accounts/host_stats/", {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            credentials: "include",
-          })
-        const data = await response.json();
-        setHostStats(data)
-    } catch (error) {
-        if (error) throw error 
-        console.error("Failed to fetch host stats", error)
-    }
-  }
+    const { isAuthenticated, user, checkAuthentication } = useAuth();
+    const [authCheckComplete, setAuthCheckComplete] = useState(false);
+    const [hostStats, setHostStats] = useState({});
   
-  useEffect(() => {
-    host()
-    checkAuthentication();
-  }, []);
+    const host = async () => {
+      try {
+        const response = await fetch('http://127.0.0.1:8000/accounts/host_stats/', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+        });
+        const data = await response.json();
+        setHostStats(data);
+      } catch (error) {
+        if (error) throw error;
+        console.error('Failed to fetch host stats', error);
+      }
+    };
+  
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          await checkAuthentication();
+          setAuthCheckComplete(true);
+        } catch (error) {
+          
+          console.error('Authentication error', error);
+        }
+      };
+  
+      if (!authCheckComplete) {
+        fetchData();
+        host();
+      }
+    }, [checkAuthentication, authCheckComplete]);
+  
+    if (!authCheckComplete) {
+      return <p>Loading...</p>;
+    }
   return (
 <>
     {
@@ -72,6 +89,7 @@ const ProfilePage = () => {
             :
             <div>
             <Link to="/profile_edit">
+            <span className=' sr-only'>Edit profile</span>
             <FaGear className='absolute ml-[8rem] max-sm:ml-[6rem]' size="22" />
         </Link>
             <div className="ml-10 flex flex-col justify-center">

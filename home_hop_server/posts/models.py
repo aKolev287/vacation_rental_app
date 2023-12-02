@@ -29,6 +29,14 @@ class Post(models.Model):
     by_user = models.CharField(max_length=100)
     date = models.DateTimeField(auto_now_add=True)
 
+    def average_rating(self):
+        reviews = self.comments.all()
+        if reviews:
+            total_rating = sum(review.review for review in reviews)
+            average = total_rating / len(reviews)
+            return round(average, 2)  # Round to 2 decimal places
+        return 0  # Default rating if there are no reviews
+    
     def __str__(self):
         return self.title
     

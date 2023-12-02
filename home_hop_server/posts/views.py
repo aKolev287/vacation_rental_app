@@ -12,8 +12,13 @@ from rest_framework.decorators import api_view
 
 
 class PostListView(generics.ListAPIView):
-    queryset = Post.objects.all()
     serializer_class = PostSerializer
+
+    def get_queryset(self):
+        queryset = Post.objects.all()
+        for post in queryset:
+            post.rating = post.average_rating()  # Calculate and set the average rating for each post
+        return queryset
 
 
 @api_view(['GET'])
@@ -22,7 +27,9 @@ def post_details(request, id):
         post = Post.objects.get(id=id)
         print(f'post: {post.id}')
         serializer = PostSerializer(post)
-        return Response(serializer.data)
+        data = serializer.data
+        data['rating'] = post.average_rating()
+        return Response(data)
     
     except post.DoesNotExist:
         return Response({'status': '404 Not Found'}, status=status.HTTP_404_NOT_FOUND)

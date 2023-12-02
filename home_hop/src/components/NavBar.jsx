@@ -17,21 +17,25 @@ const NavBar = () => {
     <>
       <div className="border-[1px] h-20 flex justify-between items-center px-3">
       <Link className='flex items-center' to="/">
+        <span className=' sr-only'>Home page</span>
         <img className='h-28' src="/tent.png" alt="" />
       </Link>
       <div className='flex items-center '>
         <input className='bg-gray-100 py-2 pl-8 w-96 pr-8 rounded-s-full focus:outline-none focus:shadow-lg' type="text" placeholder='Search' />
         <button className='bg-gray-800 py-[0.55rem] px-3 rounded-r-full hover:bg-gray-600'>
+        <span className=' sr-only'>Search</span>
         <FaMagnifyingGlass className=' ' color='white' size="23" />
         </button>
       </div>
       <div className='flex items-center'>
         {!isAuthenticated ? 
               <Link className='mr-2 p-2 border-[1px] rounded-full border-gray-300 hover:shadow-lg hover:bg-gray-100 cursor-pointer' to="/register">
+                <span className=' sr-only'>Register</span>
                 <FaDoorOpen size="23" />
               </Link>
               :
               <Link className='mr-2 p-2 border-[1px] rounded-full border-gray-300 hover:shadow-lg hover:bg-gray-100 cursor-pointer' to="/profile">
+                <span className=' sr-only'>Profile</span>
                 <FaRegUser size="23" />
               </Link>
         }
@@ -49,6 +53,7 @@ const NavBar = () => {
             }}
           >
             {isOpen ? <FaBarsStaggered size="23"/> :  <FaBars size="23" />}
+            <span className=' sr-only'>Menu</span>
           </motion.button>
         
         
