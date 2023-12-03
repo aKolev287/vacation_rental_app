@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404
 import jwt
 import datetime
+from django.conf import settings
 from rest_framework import generics, status
 from .models import Post, User, Tag, Comment
 from .serializers import PostSerializer, CommentSerializer, TagSerializer
@@ -8,16 +9,17 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.decorators import api_view
-
-
+from home_hop_server.conf import MainPagination
 
 class PostListView(generics.ListAPIView):
     serializer_class = PostSerializer
+    pagination_class = MainPagination
 
     def get_queryset(self):
         queryset = Post.objects.all()
+
         for post in queryset:
-            post.rating = post.average_rating()  # Calculate and set the average rating for each post
+            post.rating = post.average_rating()
         return queryset
 
 
