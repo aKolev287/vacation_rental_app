@@ -34,7 +34,7 @@ const HomePage = () => {
         setIsLastPage(!data.next);
         // Set the total number of pages
         setTotalPages(data.count);
-        setLastPage(Math.ceil(data.count / 1))
+        setLastPage(Math.ceil(data.count / 15))
         // Update the image URL in each post object
         const updatedPosts = data.results.map(post => {
           const formattedDate = new Date(post.date); // Convert the date string to a Date object
