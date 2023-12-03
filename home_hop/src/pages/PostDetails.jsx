@@ -8,7 +8,8 @@ const PostDetails = () => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [price, setPrice] = useState(0);
-  const [message, setMessage] = useState("Cost:")
+  const [message, setMessage] = useState("")
+  const [warning, setWarning] = useState("")
 
   const { id } = useParams();
   const [post, setPost] = useState({});
@@ -36,18 +37,26 @@ const PostDetails = () => {
   const total = daysDifference * (post.price)
 
   
-  console.log(`The difference is ${daysDifference} days.`);
   useEffect(() => {
     fetchData();
 
   }, [id])
+
   useEffect(() => {
-    console.log(startDate)
-    console.log(endDate)
-    console.log(daysDifference);
-    console.log(post.price)
+    // console.log(startDate)
+    // console.log(endDate)
+    // console.log(daysDifference);
+    // console.log(post.price)
     if (total !== isNaN){
       setPrice(total);
+      if (total > 0) {
+        setMessage(`${post.price}$ x ${daysDifference} day stay = ${price}$`)
+        setWarning("")
+      }
+      else{
+        setWarning("You cannot set a data in the past!")
+        setMessage("")
+      }
     }
     console.log(price)
   })
@@ -80,7 +89,6 @@ const PostDetails = () => {
 
       <div className='grid grid-cols-2 gap-40'>
         <p className='text-xl max-w-2xl'>{post.description}
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
         </p>
         <div className='border-[1px] border-gray-300 rounded-xl shadow-lg max-h-80 max-w-[26.7rem] p-5'>
           <p className='text-xl font-semibold ml-2'>{post.price}$/night</p>
@@ -89,8 +97,13 @@ const PostDetails = () => {
               <input name="start" type="date" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="Select date start" onChange={(e) => setStartDate(e.target.value) } />
             <span className="mx-4 text-gray-500">to</span>
               <input name="end" type="date" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full  p-2.5 " placeholder="Select date end" onChange={(e) => setEndDate(e.target.value)}/>
+              
           </div>
-          <div className='flex justify-between items-center my-5 '>
+
+          <div className='flex justify-center my-1'>
+          <p className='text-semibold text-red-600'>{warning}</p>
+          </div>
+          <div className='flex justify-between items-center my-3 '>
             <p className=' font-semibold'>Guests: </p>
             <div className='flex justify-center items-center'>
               <div className='p-2 border-[1px] rounded-full border-gray-300 hover:shadow-lg hover:bg-gray-100 cursor-pointer' onClick={() => guests <= 1 ? setGuests(1) : setGuests(guests-1)}>
@@ -102,9 +115,15 @@ const PostDetails = () => {
               </div>
             </div>
           </div>
+          <div className='flex justify-between items-center'>
+            <p className=' font-semibold'>Price: </p>
+            <div className='flex justify-center items-center'>
+              <p className=' font-semibold'>{message}</p>
+            </div>
+          </div>
           </div>
 
-          <button className='bg-gray-900 text-white text-xl p-3 items-center w-full rounded-xl font-semibold shadow-lg'>Reseve</button>
+          <button className='bg-gray-900 text-white text-xl p-3 items-center w-full rounded-xl font-semibold shadow-lg  my-4'>Reseve</button>
         </div>
 
       </div>

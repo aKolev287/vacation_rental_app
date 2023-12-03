@@ -76,7 +76,7 @@ const PostComment = ({ post, fn }) => {
       </>
       :
         <>
-          <p className="text-lg font-semibold">Please <Link className="text-gray-500 underline">Login</Link> or <Link className="text-gray-500 underline">Sign up</Link> to leave reviews</p>
+          <p className="text-lg font-semibold">Please <Link className="text-gray-500 underline" to="/login">Login</Link> or <Link to="/register" className="text-gray-500 underline">Sign up</Link> to leave reviews</p>
         </>
     }
 

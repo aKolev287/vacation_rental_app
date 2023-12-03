@@ -17,7 +17,8 @@ function App() {
     <>
       <Router>
         <NavBar />
-        <Routes>
+        <div className='flex flex-col h-screen justify-between'>
+        <Routes >
           <Route path='/' element={<HomePage />}/>
           <Route path='/register' element={<SignUp />}/>
           <Route path='/login' element={<SignIn />}/>
@@ -28,6 +29,8 @@ function App() {
           <Route path='/rooms/:id' element={<PostDetails />}/>
         </Routes>
         <Footer />
+        </div>
+
       </Router>
     </>
   )
