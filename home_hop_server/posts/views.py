@@ -105,3 +105,14 @@ def create_post(request):
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
 
+@api_view(['GET'])
+def edit_post(request, by_user):
+    posts = Post.objects.filter(by_user=by_user)
+
+    # If you want to print by_user for each post in the queryset
+    for post in posts:
+        print(post.by_user)
+
+    # If you want to return the serialized data in the response
+    serialized_posts = PostSerializer(posts, many=True)  # Replace YourPostSerializer with your actual serializer
+    return Response(serialized_posts.data)
