@@ -9,6 +9,7 @@ import UserPage from './pages/UserPage'
 import CreatePost from './pages/CreatePost'
 import PostDetails from './pages/PostDetails'
 import Footer from './components/Footer'
+import EditPost from './pages/EditPost'
 
 function App() {
   
@@ -27,6 +28,7 @@ function App() {
           <Route path='/profile/:username' element={<UserPage />}/>
           <Route path='/create_offer' element={<CreatePost />}/>
           <Route path='/rooms/:id' element={<PostDetails />}/>
+          <Route path='/edit/:id' element={<EditPost />}/>
         </Routes>
         <Footer />
         </div>

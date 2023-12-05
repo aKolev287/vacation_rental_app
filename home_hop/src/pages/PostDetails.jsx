@@ -54,7 +54,7 @@ const PostDetails = () => {
         setWarning("")
       }
       else{
-        setWarning("You cannot set a data in the past!")
+        setWarning("You cannot set a date in the past!")
         setMessage("")
       }
     }

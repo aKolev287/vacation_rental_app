@@ -1,11 +1,20 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { FaStar, FaSuitcase, FaGlobe, FaBookAtlas } from "react-icons/fa6";
+import UserPostsCard from "../components/UserPostsCard";
 
 const UserPage = () => {
   const { username } = useParams()
   const [user, setUser] = useState(null);
   const [stats, setStats] = useState(null);
+  const [posts, setPosts] = useState(null);
+
+  const fetchPosts = async() => {
+    const response = await fetch(`http://127.0.0.1:8000/posts/view/${username}/`);
+    const data = await response.json();
+    setPosts(data);
+  } 
+
   const fetchStats = async() => {
     const response_stats = await fetch(`http://127.0.0.1:8000/accounts/host_stats/${username}/`,    {
         headers: {
@@ -16,6 +25,7 @@ const UserPage = () => {
     const stats_data = await response_stats.json();
     setStats(stats_data);
   }
+
   useEffect(() => {
     const fetchUserProfile = async () => {
       const response = await fetch(`http://127.0.0.1:8000/accounts/user/${username}/`,    {
@@ -30,7 +40,10 @@ const UserPage = () => {
     };
 
     fetchUserProfile();
+    fetchPosts();
+
   }, [username]);
+
   useEffect(() => {
     if (user?.role === "Host") {
       fetchStats();
@@ -40,7 +53,7 @@ const UserPage = () => {
   return (
     <div className="grid grid-cols-2 max-sm:grid-cols-1 grid-rows-1">
     { user ? 
-    <div key={user.id} className='flex justify-center ml-80 max-sm:ml-0 mt-10'>
+    <div key={user.id} className='flex justify-center ml-80 max-sm:ml-0 mt-10 sticky top-5 max-sm:static'>
         <div className='h-68 max-h-80 w-96 max-sm:w-80 rounded-xl p-5 card-shadow grid grid-cols-2'>
         
         
@@ -116,21 +129,23 @@ const UserPage = () => {
             :
         null
     }
-       {
-      user ? 
-      <div className="mt-5 grid grid-cols-1 gap-4">
-      <div key={user.id} className='flex justify-center ml-80 max-sm:ml-0 mt-10'>
-        <div className='h-68 max-h-80 w-96 max-sm:w-80 rounded-xl p-5 card-shadow grid grid-cols-1'>
-
-        <p className="bg-gray-200">aaaaaaaaaaaaaaa</p>
-        </div>
-
-        </div>
-
+    <div>
+    
     </div>
-      :
-    null  
-  }
+      {user ?
+        <div className='flex justify-start flex-col px-10 mt-10 '>
+          <div className="border-b-[1px]" />
+          <h3 className="font-semibold text-2xl my-5">{user.username}’s listings</h3>
+          <div className="grid grid-cols-3 gap-y-3 gap-2 max-sm:grid-cols-1 ">
+            {posts?.map((post) => (
+              <UserPostsCard key={post.id} link={`http://localhost:5173/rooms/${post.id}`} image={`http://127.0.0.1:8000/posts${post.image}`} rating={post.rating} location={post.location} updatable={false} />
+            ))}
+
+          </div>
+        </div>
+        :
+        null
+      }
 
 </div>
   )

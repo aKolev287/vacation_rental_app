@@ -11,6 +11,9 @@ from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.decorators import api_view
 from home_hop_server.conf import MainPagination
 
+# TODO: fix the rating attribute.
+# TODO: fix the by_user attribute.
+
 class PostListView(generics.ListAPIView):
     serializer_class = PostSerializer
     pagination_class = MainPagination
@@ -107,15 +110,33 @@ def create_post(request):
 
 @api_view(['GET'])
 def check_post(request, by_user):
+
     posts = Post.objects.filter(by_user=by_user)
-
-    # If you want to print by_user for each post in the queryset
+    
+    # Assuming average_rating is a method in your Post model
     for post in posts:
-        print(post.by_user)
+        post.rating = post.average_rating()
 
-    # If you want to return the serialized data in the response
-    serialized_posts = PostSerializer(posts, many=True)  # Replace YourPostSerializer with your actual serializer
-    return Response(serialized_posts.data)
+    # Serialize each post individually
+    serialized_posts = [PostSerializer(post).data for post in posts]
+
+    return Response(serialized_posts)
+
+@api_view(['GET'])
+def check_user_post(request):
+    token = request.COOKIES.get('jwt')
+    payload = jwt.decode(token, 'secret', algorithms=['HS256'])
+    user = User.objects.filter(id=payload['id']).first()
+    posts = Post.objects.filter(by_user=user)
+    
+    # Assuming average_rating is a method in your Post model
+    for post in posts:
+        post.rating = post.average_rating()
+
+    # Serialize each post individually
+    serialized_posts = [PostSerializer(post).data for post in posts]
+
+    return Response(serialized_posts)
 
 
 @api_view(['PATCH'])

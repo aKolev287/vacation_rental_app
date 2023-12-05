@@ -2,11 +2,25 @@ import { useEffect, useState } from 'react'
 import { useAuth } from "../hooks/authContext";
 import { FaStar, FaSuitcase, FaGlobe, FaBookAtlas, FaGear  } from "react-icons/fa6";
 import { Link, Navigate } from "react-router-dom"
+import UserPostsCard from "../components/UserPostsCard";
+
 const ProfilePage = () => {
     const { isAuthenticated, user, checkAuthentication } = useAuth();
     const [authCheckComplete, setAuthCheckComplete] = useState(false);
     const [hostStats, setHostStats] = useState({});
-  
+    const [posts, setPosts] = useState(null);
+
+    const fetchPosts = async() => {
+      const response = await fetch(`http://127.0.0.1:8000/posts/view_user_post/`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include"
+      });
+      const data = await response.json();
+      setPosts(data);
+    } 
+
     const host = async () => {
       try {
         const response = await fetch('http://127.0.0.1:8000/accounts/host_stats/', {
@@ -37,6 +51,7 @@ const ProfilePage = () => {
   
       if (!authCheckComplete) {
         fetchData();
+        fetchPosts();
         host();
       }
     }, [checkAuthentication, authCheckComplete]);
@@ -89,9 +104,9 @@ const ProfilePage = () => {
             :
             <div>
             <Link to="/profile_edit">
-            <span className=' sr-only'>Edit profile</span>
-            <FaGear className='absolute ml-[8rem] max-sm:ml-[6rem]' size="22" />
-        </Link>
+              <span className=' sr-only'>Edit profile</span>
+              <FaGear className='absolute ml-[8rem] max-sm:ml-[6rem]' size="22" />
+            </Link>
             <div className="ml-10 flex flex-col justify-center">
                 <p className='text-2xl font-bold'>{user.role}</p>
                 <p className='text-base'>Role</p>
@@ -146,13 +161,26 @@ const ProfilePage = () => {
         {
       user ? 
       <div key={user.id}>
-          <p>Aaaaa</p>
+          <p>Reviews</p>
       </div>
-    :
-    null  
-  }
- 
-    </div>
+        :
+        null  
+      }
+       {user ?
+        <div className='flex justify-start flex-col px-10 mt-10 '>
+          <div className="border-b-[1px]" />
+          <h3 className="font-semibold text-2xl my-5">{user.username}’s listings</h3>
+          <div className="grid grid-cols-3 gap-y-3 gap-2 max-sm:grid-cols-1 ">
+            {posts?.map((post) => (
+              <UserPostsCard key={post.id} link={`http://localhost:5173/rooms/${post.id}`} image={`http://127.0.0.1:8000/posts${post.image}`} rating={post.rating} location={post.location} updatable={true}  editLink={`http://localhost:5173/edit/${post.id}`}/>
+            ))}
+
+          </div>
+        </div>
+        :
+        null
+      }
+      </div>
     :
     <Navigate to="/login" />
     }

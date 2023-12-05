@@ -1,7 +1,7 @@
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from .views import create_post, PostListView, post_details, comment, update_post, check_post, delete_post
+from .views import create_post, PostListView, post_details, comment, update_post, check_post, delete_post, check_user_post
 
 
 urlpatterns = [
@@ -14,7 +14,7 @@ urlpatterns = [
     # Miscellaneous
     path('view/<int:id>', post_details),
     path('view/<str:by_user>/', check_post),
-
+    path('view_user_post/', check_user_post),
 
     # Basic CRUD for comments
     path('<int:post_id>/comments/', comment),
