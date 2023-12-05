@@ -116,6 +116,21 @@ const UserPage = () => {
             :
         null
     }
+       {
+      user ? 
+      <div className="mt-5 grid grid-cols-1 gap-4">
+      <div key={user.id} className='flex justify-center ml-80 max-sm:ml-0 mt-10'>
+        <div className='h-68 max-h-80 w-96 max-sm:w-80 rounded-xl p-5 card-shadow grid grid-cols-1'>
+
+        <p className="bg-gray-200">aaaaaaaaaaaaaaa</p>
+        </div>
+
+        </div>
+
+    </div>
+      :
+    null  
+  }
 
 </div>
   )

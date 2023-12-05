@@ -130,6 +130,7 @@ const PostDetails = () => {
       <div className='border-b-[1px] my-5' />
       <PostComment post={post.id} fn={fetchData}/>
       <Comments post={post} />
+     
 
     </div>
   )

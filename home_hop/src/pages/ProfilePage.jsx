@@ -143,11 +143,20 @@ const ProfilePage = () => {
                 :
             null
         }
-
+        {
+      user ? 
+      <div key={user.id}>
+          <p>Aaaaa</p>
+      </div>
+    :
+    null  
+  }
+ 
     </div>
     :
     <Navigate to="/login" />
     }
+  
 </>
 
 

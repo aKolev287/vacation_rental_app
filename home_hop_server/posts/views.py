@@ -106,7 +106,7 @@ def create_post(request):
     
 
 @api_view(['GET'])
-def edit_post(request, by_user):
+def check_post(request, by_user):
     posts = Post.objects.filter(by_user=by_user)
 
     # If you want to print by_user for each post in the queryset
@@ -116,3 +116,54 @@ def edit_post(request, by_user):
     # If you want to return the serialized data in the response
     serialized_posts = PostSerializer(posts, many=True)  # Replace YourPostSerializer with your actual serializer
     return Response(serialized_posts.data)
+
+
+@api_view(['PATCH'])
+def update_post(request, post_id):
+    # Extract user information from JWT token
+    token = request.COOKIES.get('jwt')
+    payload = jwt.decode(token, 'secret', algorithms=['HS256'])
+    user = User.objects.filter(id=payload['id']).first()
+
+    # Retrieve the post to be updated
+    post = Post.objects.filter(id=post_id, by_user=user.username).first()
+
+    if not post:
+        return Response({'error': 'Post not found or you do not have permission to update this post.'}, status=404)
+
+    # Check if the user making the request is the same as the one who created the post
+    if post.by_user != user.username:
+        return Response({'error': 'You do not have permission to update this post.'}, status=403)
+
+    # Serialize the existing post data
+    serialized_post = PostSerializer(post, data=request.data, partial=True)
+
+    if serialized_post.is_valid():
+        # Save the updated post
+        serialized_post.save()
+        return Response({'message': 'Post updated successfully'})
+    else:
+        return Response({'error': serialized_post.errors}, status=400)
+
+
+@api_view(['DELETE'])
+def delete_post(request, post_id):
+    # Extract user information from JWT token
+    token = request.COOKIES.get('jwt')
+    payload = jwt.decode(token, 'secret', algorithms=['HS256'])
+    user = User.objects.filter(id=payload['id']).first()
+
+    # Retrieve the post to be deleted
+    post = Post.objects.filter(id=post_id, by_user=user.username).first()
+
+    if not post:
+        return Response({'error': 'Post not found or you do not have permission to delete this post.'}, status=404)
+
+    # Check if the user making the request is the same as the one who created the post
+    if post.by_user != user.username:
+        return Response({'error': 'You do not have permission to delete this post.'}, status=403)
+
+    # Delete the post
+    post.delete()
+
+    return Response({'message': 'Post deleted successfully'})
