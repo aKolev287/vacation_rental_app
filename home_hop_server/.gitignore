@@ -1,4 +1,7 @@
 /db.sqlite3
 /config
+/posts/__pycache__
+/accounts/__pycache__
+/home_hop_server/__pycache__
 /media/profile_pics
 /media/post_pics
