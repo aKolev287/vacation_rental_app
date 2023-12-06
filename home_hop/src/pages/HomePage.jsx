@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../hooks/authContext";
 import MiniBar from "../components/MiniBar";
-import { Link } from "react-router-dom";
+import FrontPageCards from "../components/FrontPageCards";
 
-
-import { FaLocationDot, FaStar, FaDollarSign, FaCalendarDay, FaCaretRight, FaForward } from "react-icons/fa6";
+import {FaCaretRight, FaForward } from "react-icons/fa6";
 const HomePage = () => {
   const { checkAuthentication } = useAuth();
   const [posts, setPosts] = useState([]);
@@ -72,38 +71,10 @@ const HomePage = () => {
       <div className="flex justify-between flex-col">
       <div className="grid grid-cols-5 max-md:grid-cols-3 max-md:gap-96 max-sm:grid-cols-1 max-sm:gap-5">
       {posts.map((post) => (
-        <Link key={post.id} to={`http://localhost:5173/rooms/${post.id}`} >
-        <div  className="border-b-[1px] border-x-[1px] rounded-xl shadow-lg flex flex-col w-[20rem] mx-8 mt-10">
-          <img className="w-full h-60 object-cover rounded-lg" src={post.image} srcSet="" alt="" />
-          <div className="p-2">
-            <div className="flex justify-between pr-2 mt-2">
-              <div className="flex items-center text-lg ">
-                <FaLocationDot size="16"/><p className="ml-1 font-semibold">{post.location}</p>
-              </div>
-              <div className="flex items-center text-lg">
-              <FaStar color='orange' size="16" /><p className="ml-1 font-semibold" >{post.rating}</p>
-              </div>
-            </div>
-
-            <div className="flex justify-between pr-2 mt-2">
-              <div className="flex items-center text-sm ml-1 ">
-                <p className="font-medium text-gray-600">{post.description}...</p>
-              </div>
-            </div>
-           
-            <div className="flex justify-between pr-2 mt-2">
-              <div className="flex items-center text-lg ">
-                <FaDollarSign size="16"/><p className="font-semibold">{post.price}/night</p>
-              </div>
-              <div className="flex items-center text-sm ">
-                <FaCalendarDay size="13"/><p className="ml-1 font-semibold">{post.date}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        </Link>
+        <FrontPageCards key={post.id} id={post.id} image={post.image} description={post.description} location={post.location} rating={post.rating} price={post.price} date={post.date} />
       ))}
       </div>
+
       <div className="flex justify-center mt-20 gap-3">
           <button className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full disabled:bg-gray-800" onClick={() => setCurrentPage(1)}  disabled={currentPage === 1}><FaForward size="15" className="rotate-180" /></button>
           <button className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full disabled:bg-gray-800" onClick={prevPage} disabled={currentPage === 1}><FaCaretRight size="15" className="rotate-180" /></button>

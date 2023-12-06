@@ -2,12 +2,19 @@ from django.db import models
 from accounts.models import User
 
 
-class Tag(models.Model):
-    name = models.CharField(max_length=50)
-    def __str__(self):
-        return self.name
-
 class Post(models.Model):
+    OPTIONS = [
+        ('house', 'House'),
+        ('apartment', 'Apartment'),
+        ('unusual', 'Unusual'),
+        ('iconic_city', 'Iconic city'),
+        ('mountain', 'Mountain'),
+        ('desert', 'Desert'),
+        ('tropical', 'Tropical'),
+        ('arctic', 'Arctic'),
+        ('forest', 'Forest'),
+    ]
+
     title = models.CharField(max_length=200)
     description = models.TextField(default=None, blank=True)
 
@@ -15,7 +22,7 @@ class Post(models.Model):
     guests = models.IntegerField(default=1)
     rating = models.FloatField(default=0)
 
-    tags = models.ManyToManyField(Tag, blank=True)
+    tags = models.CharField(max_length=50, choices=OPTIONS, null=True)
 
     price = models.IntegerField(default=0)
     location = models.CharField(max_length=100, default=',')

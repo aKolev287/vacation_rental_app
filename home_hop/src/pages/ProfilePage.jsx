@@ -160,8 +160,19 @@ const ProfilePage = () => {
         }
         {
       user ? 
-      <div key={user.id}>
-          <p>Reviews</p>
+      <div>
+        
+          <div className='flex justify-center max-sm:ml-0 ml-80 mt-10'>
+            <div className='flex flex-col'>
+            <div className="border-b-[1px]" />
+            <p className="font-semibold text-2xl my-5">{user.username}’s reviews</p>
+              <div className='h-68 max-h-80 w-96 max-sm:w-80 rounded-xl p-5 card-shadow'>
+                <p>Stars</p>
+                <p>Review: Something something</p>
+              </div>
+
+            </div>
+          </div>
       </div>
         :
         null  
@@ -169,10 +180,10 @@ const ProfilePage = () => {
        {user ?
         <div className='flex justify-start flex-col px-10 mt-10 '>
           <div className="border-b-[1px]" />
-          <h3 className="font-semibold text-2xl my-5">{user.username}’s listings</h3>
+          <p className="font-semibold text-2xl my-5">{user.username}’s listings</p>
           <div className="grid grid-cols-3 gap-y-3 gap-2 max-sm:grid-cols-1 ">
             {posts?.map((post) => (
-              <UserPostsCard key={post.id} link={`http://localhost:5173/rooms/${post.id}`} image={`http://127.0.0.1:8000/posts${post.image}`} rating={post.rating} location={post.location} updatable={true}  editLink={`http://localhost:5173/edit/${post.id}`}/>
+              <UserPostsCard key={post.id} link={`/rooms/${post.id}`} image={`http://127.0.0.1:8000/posts${post.image}`} rating={post.rating} location={post.location} updatable={true}  editLink={`/edit/${post.id}`}/>
             ))}
 
           </div>

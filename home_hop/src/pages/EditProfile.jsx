@@ -5,7 +5,6 @@ import {
   FaIdCard,
   FaSuitcase,
   FaUser,
-  FaLanguage,
   FaMessage,
   FaClipboardUser,
 } from "react-icons/fa6";

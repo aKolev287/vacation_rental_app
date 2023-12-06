@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { isAuthenticated, user, isLoading, checkAuthentication } = useAuth();
+  const { isAuthenticated, checkAuthentication } = useAuth();
   const toggleMenu = () => {
     setIsOpen(!isOpen); 
   };

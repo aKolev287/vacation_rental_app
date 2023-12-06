@@ -3,20 +3,23 @@ import jwt
 import datetime
 from django.conf import settings
 from rest_framework import generics, status
-from .models import Post, User, Tag, Comment
-from .serializers import PostSerializer, CommentSerializer, TagSerializer
+from .models import Post, User, Comment
+from .serializers import PostSerializer, CommentSerializer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.decorators import api_view
 from home_hop_server.conf import MainPagination
+from .filters import PostFilter
+from django_filters.rest_framework import DjangoFilterBackend
 
-# TODO: fix the rating attribute.
 # TODO: fix the by_user attribute.
 
 class PostListView(generics.ListAPIView):
     serializer_class = PostSerializer
     pagination_class = MainPagination
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = PostFilter
 
     def get_queryset(self):
         queryset = Post.objects.all()
@@ -121,6 +124,10 @@ def check_post(request, by_user):
     serialized_posts = [PostSerializer(post).data for post in posts]
 
     return Response(serialized_posts)
+
+@api_view(['GET'])
+def check_reviews(request):
+    pass
 
 @api_view(['GET'])
 def check_user_post(request):

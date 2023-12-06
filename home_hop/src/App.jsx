@@ -10,7 +10,7 @@ import CreatePost from './pages/CreatePost'
 import PostDetails from './pages/PostDetails'
 import Footer from './components/Footer'
 import EditPost from './pages/EditPost'
-
+import FilteredPostsPage from './pages/FilteredPostsPage'
 function App() {
   
 
@@ -21,6 +21,7 @@ function App() {
         <div className='flex flex-col h-screen justify-between'>
         <Routes >
           <Route path='/' element={<HomePage />}/>
+          <Route path="/filtered_posts" element={<FilteredPostsPage />} />
           <Route path='/register' element={<SignUp />}/>
           <Route path='/login' element={<SignIn />}/>
           <Route path='/profile' element={<ProfilePage />}/>

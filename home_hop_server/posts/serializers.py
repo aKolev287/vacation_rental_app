@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Post, Tag, Comment
+from .models import Post, Comment
 from accounts.serializers import UserSerializer
 from accounts.models import User
 
@@ -9,10 +9,6 @@ class User(UserSerializer):
         model = User
         fields = ['username', 'pfp']
 
-class TagSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Tag
-        fields = ['id', 'name']
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -25,14 +21,13 @@ class CommentSerializer(serializers.ModelSerializer):
 
 class PostSerializer(serializers.ModelSerializer):
     comments = CommentSerializer(many=True, read_only=True)
-    
     class Meta:
         model = Post
         fields = ['id', 'title', 'description', 
                   'date', 'user_id', "by_user", 
                   'image', 'guests', 'rating', 
                   'price', 'location', 'bathrooms',
-                  'bedrooms', 'beds', 'amenities', 'comments']
+                  'bedrooms', 'beds', 'amenities','tags', 'comments' ]
         
 
     def create(self, validated_data):

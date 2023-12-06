@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'posts',
+    'django_filters'
 ]
 
 AUTH_USER_MODEL = "accounts.User"

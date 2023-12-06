@@ -11,6 +11,7 @@ import {
   FaRegGem
 
 } from "react-icons/fa6";
+import Select from 'react-select'
 import { useAuth } from "../hooks/authContext";
 import { Navigate, useNavigate } from "react-router-dom";
 import PostFormField from "../components/PostFormField";
@@ -27,9 +28,26 @@ const CreatePost = () => {
   const [bedrooms, setBedrooms] = useState("")
   const [beds, setBeds] = useState("")
   const [amenities, setAmenities] = useState("")
+  const [selectedTag, setSelectedTag] = useState("");
 
+  const options = [
+    { value: 'house', label: 'House'},
+    { value: 'apartment', label: 'Apartment'},
+    { value: 'unusual', label: 'Unusual' },
+    { value: 'iconic_city', label: 'Iconic city' },
+    { value: 'mountain', label: 'Mountain' },
+    { value: 'desert', label: 'Desert' },
+    { value: 'tropical', label: 'Tropical' },
+    { value: 'arctic', label: 'Arctic' },
+    { value: 'forest', label: 'Forest' },
+  ];
+  
   const navigate = useNavigate();
 
+  const handleTagChange = (selectedOption) => {
+    setSelectedTag(selectedOption);
+    console.log(selectedOption);
+  };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -46,6 +64,7 @@ const CreatePost = () => {
     formData.append("bedrooms", bedrooms)
     formData.append("beds", beds)
     formData.append("amenities", amenities)
+    formData.append("tags", selectedTag.value);
     
     if (image !== null && image instanceof File) {
         formData.append("image", image);
@@ -74,7 +93,7 @@ const CreatePost = () => {
         <div key={user.id} className="p-8 lg:w-1/3 mx-auto z-10">
           <div className="bg-gray-800 rounded-lg py-12 px-4 lg:px-24">
             <p className="text-center text-2xl text-white font-light">
-              Edit profile
+              Create post
             </p>
             <div className="mt-3">
               <PostFormField type="text" placeholder="Title" func={(e) => setTitle(e.target.value)} icon={<FaHeading className="ml-3" color="gray" size="20" /> } />
@@ -86,6 +105,14 @@ const CreatePost = () => {
               <PostFormField type="number" placeholder="Bedrooms" func={(e) => setBedrooms(e.target.value)} icon={<FaBed className="ml-3" color="gray" size="20" /> } />
               <PostFormField type="number" placeholder="Beds" func={(e) => setBeds(e.target.value)} icon={<FaBed className="ml-3" color="gray" size="20" /> } />
               <PostFormField type="text" placeholder="Amenities" func={(e) => setAmenities(e.target.value)} icon={<FaRegGem className="ml-3" color="gray" size="20" /> } />
+              <div className="relative mt-3"> 
+              <Select
+                  options={options}
+                  value={selectedTag}
+                  onChange={handleTagChange}
+                  placeholder="Select tag"
+                />
+              </div>
               
               <div className="relative mt-3">
                 <div className="absolute left-0 inset-y-0 flex items-center">

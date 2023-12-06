@@ -1,4 +1,3 @@
-import React from 'react'
 import { FaTelegram, FaInstagram, FaXTwitter, FaGithub} from "react-icons/fa6";
 const Footer = () => {
     const year = new Date().getFullYear();
