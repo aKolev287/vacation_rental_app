@@ -1,14 +1,33 @@
 import { useEffect, useState } from 'react'
 import { useAuth } from "../hooks/authContext";
-import { FaStar, FaSuitcase, FaGlobe, FaBookAtlas, FaGear  } from "react-icons/fa6";
+import { FaStar, FaSuitcase, FaGlobe, FaBookAtlas, FaGear } from "react-icons/fa6";
 import { Link, Navigate } from "react-router-dom"
 import UserPostsCard from "../components/UserPostsCard";
+import ProfileComments from '../components/ProfileComments';
 
 const ProfilePage = () => {
     const { isAuthenticated, user, checkAuthentication } = useAuth();
     const [authCheckComplete, setAuthCheckComplete] = useState(false);
     const [hostStats, setHostStats] = useState({});
     const [posts, setPosts] = useState(null);
+    const [comments, setComments] = useState([]);
+
+    const fetchComments = async() => {
+      try{
+        const response = await fetch('http://127.0.0.1:8000/posts/comments/', {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include"
+        });
+        const data = await response.json();
+        setComments(data)
+      }catch(error) {
+        if (error) throw error;
+        console.error('Failed to fetch host stats', error);
+      }
+
+    }
 
     const fetchPosts = async() => {
       const response = await fetch(`http://127.0.0.1:8000/posts/view_user_post/`, {
@@ -52,6 +71,7 @@ const ProfilePage = () => {
       if (!authCheckComplete) {
         fetchData();
         fetchPosts();
+        fetchComments();
         host();
       }
     }, [checkAuthentication, authCheckComplete]);
@@ -166,10 +186,10 @@ const ProfilePage = () => {
             <div className='flex flex-col'>
             <div className="border-b-[1px]" />
             <p className="font-semibold text-2xl my-5">{user.username}’s reviews</p>
-              <div className='h-68 max-h-80 w-96 max-sm:w-80 rounded-xl p-5 card-shadow'>
-                <p>Stars</p>
-                <p>Review: Something something</p>
-              </div>
+            {comments.map((comment => (
+                <ProfileComments key={comment.id} comment={comment} />
+            )))}
+
 
             </div>
           </div>

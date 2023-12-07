@@ -127,7 +127,14 @@ def check_post(request, by_user):
 
 @api_view(['GET'])
 def check_reviews(request):
-    pass
+    token = request.COOKIES.get('jwt')
+    payload = jwt.decode(token, 'secret', algorithms=['HS256'])
+    user = User.objects.filter(id=payload['id']).first()
+    review = Comment.objects.filter(user=user) # Get the last 5 reviews
+
+    serializer = CommentSerializer(review, many=True)
+
+    return Response(serializer.data)
 
 @api_view(['GET'])
 def check_user_post(request):
@@ -195,3 +202,4 @@ def delete_post(request, post_id):
     post.delete()
 
     return Response({'message': 'Post deleted successfully'})
+

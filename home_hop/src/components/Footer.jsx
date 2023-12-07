@@ -1,4 +1,5 @@
 import { FaTelegram, FaInstagram, FaXTwitter, FaGithub} from "react-icons/fa6";
+import { Link } from "react-router-dom";
 const Footer = () => {
     const year = new Date().getFullYear();
 
@@ -22,9 +23,9 @@ const Footer = () => {
                 </a>
             </div>
             <div className="px-5 py-2">
-                <a href="#" className="text-base leading-6 text-white hover:text-gray-300">
+                <Link to="/terms" className="text-base leading-6 text-white hover:text-gray-300">
                     Terms
-                </a>
+                </Link>
             </div>
         </nav>
         <div className="flex justify-center mt-8 space-x-6">
