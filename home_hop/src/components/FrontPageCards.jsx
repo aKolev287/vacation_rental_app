@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 const FrontPageCards = ({id, image, location, rating, description, price, date}) => {
   return (
     <Link to={`/rooms/${id}`} >
-    <div  className="border-b-[1px] border-x-[1px] rounded-xl shadow-lg flex flex-col w-[20rem] mx-8 mt-10">
+    <div  className="border-b-[1px] border-x-[1px] rounded-xl shadow-lg flex flex-col w-[20rem] mx-8 max-2xl:w-[18rem] max-2xl:mx-4 mt-10">
       <img className="w-full h-60 object-cover rounded-lg" src={image} srcSet="" alt="" />
       <div className="p-2">
         <div className="flex justify-between pr-2 mt-2">

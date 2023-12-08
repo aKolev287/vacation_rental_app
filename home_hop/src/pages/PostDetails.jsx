@@ -81,7 +81,7 @@ const PostDetails = () => {
 
         <div className='border-b-[1px]' />
 
-        <p className='py-2 font-semibold'>Hosted by <Link to={`http://localhost:5173/profile/${post.by_user}/`} className='hover:text-gray-500 underline' >{post.by_user}</Link></p>
+        <p className='py-2 font-semibold'>Hosted by <Link to={`/profile/${post.by_user}/`} className='hover:text-gray-500 underline' >{post.by_user}</Link></p>
 
         <div className='border-b-[1px]' />
       </div>

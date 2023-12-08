@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useAuth } from "../hooks/authContext";
 import { Link } from 'react-router-dom';
-
+import MiniBar from './MiniBar';
 const NavBar = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const { isAuthenticated, checkAuthentication } = useAuth();
   const toggleMenu = () => {
     setIsOpen(!isOpen); 
@@ -20,7 +20,7 @@ const NavBar = () => {
         <span className=' sr-only'>Home page</span>
         <img className='h-28' src="/tent.png" alt="" />
       </Link>
-      <div className='flex items-center '>
+      <div className='flex items-center max-sm:hidden'>
         <input className='bg-gray-100 py-2 pl-8 w-96 pr-8 rounded-s-full focus:outline-none focus:shadow-lg' type="text" placeholder='Search' />
         <button className='bg-gray-800 py-[0.55rem] px-3 rounded-r-full hover:bg-gray-600'>
         <span className=' sr-only'>Search</span>
@@ -82,14 +82,7 @@ const NavBar = () => {
 
 const BurgerMenu = () => {
   return (
-    <div className='border-b-[1px] left-0 h-full text-center items-center px-96 py-2'>
-      <motion.div className='flex justify-center' animate={{ scale: 1.1 }}>
-        <p className='mx-2 text-lg'>News</p>
-        <p className='mx-2 text-lg'>About</p>
-        <p className='mx-2 text-lg'>New Features</p>
-        <p className='mx-2 text-lg'>Contacts</p>
-      </motion.div>
-    </div>
+    <MiniBar />
   )
 }
 

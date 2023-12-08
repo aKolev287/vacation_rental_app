@@ -29,6 +29,7 @@ const CreatePost = () => {
   const [beds, setBeds] = useState("")
   const [amenities, setAmenities] = useState("")
   const [selectedTag, setSelectedTag] = useState("");
+  const [error, setError] = useState(null);
 
   const options = [
     { value: 'house', label: 'House'},
@@ -54,6 +55,12 @@ const CreatePost = () => {
     setImage(file);
   };
   const createOffer = async () => {
+
+    if (!title || !description || guests <= 0 || price <= 0 || !location || !bathrooms || !bedrooms || !beds || !selectedTag) {
+      setError("Please fill in all fields and ensure that guest count and price are greater than zero.");
+      return;
+    }
+
     const formData = new FormData();
     formData.append("title", title);
     formData.append("description", description);
@@ -95,6 +102,7 @@ const CreatePost = () => {
             <p className="text-center text-2xl text-white font-light">
               Create post
             </p>
+            {error && <p className="text-red-500 mt-2">{error}</p>}
             <div className="mt-3">
               <PostFormField type="text" placeholder="Title" func={(e) => setTitle(e.target.value)} icon={<FaHeading className="ml-3" color="gray" size="20" /> } />
               <PostFormField type="file" placeholder="Image" accept="image/*" func={(e) => handleImageChange(e)} icon={<FaPaperclip className="ml-3" color="gray" size="20" /> } />
@@ -133,6 +141,7 @@ const CreatePost = () => {
                   Post
                 </button>
               </div>
+              
             </div>
           </div>
         </div>

@@ -34,7 +34,7 @@ const EditPost = () => {
   
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
-    const [imageURL, setImageURL] = useState("");
+  
     const [imageFile, setImageFile] = useState(null);
     const [guests, setGuests] = useState(0);
     const [location, setLocation] = useState("");
@@ -62,10 +62,8 @@ const EditPost = () => {
     }, [id]);
   
     useEffect(() => {
-        // Set the state variables with values from the post object
         setTitle(post.title || "");
         setDescription(post.description || "");
-        // ... do this for other state variables ...
         setGuests(post.guests || 0);
         setLocation(post.location || "");
         setPrice(post.price || 0);
@@ -73,13 +71,7 @@ const EditPost = () => {
         setBedrooms(post.bedrooms || 0);
         setBeds(post.beds || 0);
         setAmenities(post.amenities || "");
-        
 
-    
-        // Set image URL for preview if an image exists
-        setImageURL(post.image ? `http://127.0.0.1:8000/posts${post.image}` : "");
-    
-        // ... do this for other state variables ...
     
       }, [post]);
 
@@ -108,7 +100,6 @@ const EditPost = () => {
     const handleImageChange = (e) => {
       const file = e.target.files[0];
       setImageFile(file);
-      setImageURL(URL.createObjectURL(file)); // Set the image URL for preview
     };
   
     const updateOffer = async () => {

@@ -1,6 +1,5 @@
 import  { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import MiniBar from '../components/MiniBar';
 import FrontPageCards from '../components/FrontPageCards';
 
 function FilteredPostsPage() {
@@ -45,7 +44,6 @@ function FilteredPostsPage() {
 
   return (
     <div>
-    <MiniBar />
     <div className="grid grid-cols-5 max-md:grid-cols-3 max-md:gap-96 max-sm:grid-cols-1 max-sm:gap-5"> 
     {filteredPosts.map((post) => (
         <FrontPageCards key={post.id} id={post.id} image={post.image} description={post.description} location={post.location} rating={post.rating} price={post.price} date={post.date} />

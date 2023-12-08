@@ -3,7 +3,7 @@ const Terms = () => {
     <div className="max-w-2xl mx-auto p-4">
       <h1 className="text-3xl font-bold my-4">Terms of Service</h1>
       <p className="text-gray-700">
-        Welcome! By using this app, you agree to embark on a whimsical journey through the land of temporary abodes. Let's set some ground rules that are as flexible as a rubber chicken but as binding as a friendship bracelet:
+        Welcome! By using this app, you agree to embark on a whimsical journey through the land of temporary abodes. {"Let's"} set some ground rules that are as flexible as a rubber chicken but as binding as a friendship bracelet:
       </p>
 
       <p className="text-gray-700 mt-4">

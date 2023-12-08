@@ -12,6 +12,8 @@ import Footer from './components/Footer'
 import EditPost from './pages/EditPost'
 import FilteredPostsPage from './pages/FilteredPostsPage'
 import Terms from './pages/Terms'
+import Page404 from './pages/Page404'
+import About from './pages/About'
 function App() {
   
 
@@ -32,6 +34,8 @@ function App() {
           <Route path='/rooms/:id' element={<PostDetails />}/>
           <Route path='/edit/:id' element={<EditPost />}/>
           <Route path='/terms' element={<Terms />}/>
+          <Route path='/about' element={<About />}/>
+          <Route path='*' element={<Page404 />}/>
         </Routes>
         <Footer />
         </div>

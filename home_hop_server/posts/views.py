@@ -23,9 +23,10 @@ class PostListView(generics.ListAPIView):
 
     def get_queryset(self):
         queryset = Post.objects.all()
-
+        
         for post in queryset:
             post.rating = post.average_rating()
+            post.save()
         return queryset
 
 

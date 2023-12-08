@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Link, Navigate  } from "react-router-dom";
 import { FaUnlock, FaEnvelope, FaEye, FaEyeSlash } from "react-icons/fa6";
-
+import PostFormField from '../components/PostFormField';
 const SignIn = () => {
     const [shouldRedirect, setShouldRedirect] = useState(false);
     const [email, setEmail] = useState("");
@@ -37,37 +37,25 @@ const SignIn = () => {
             Sign in with credentials
         </p>
         <div className="mt-6">
-            <div className="relative">
-                <input
-                    className="appearance-none border pl-12 border-gray-100 shadow-sm focus:shadow-md focus:placeholder-gray-600  transition  rounded-md w-full py-3 text-gray-600 leading-tight focus:outline-none focus:ring-gray-600 focus:shadow-outline"
-                    type="email"
-                    placeholder="Email"
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-                <div className="absolute left-0 inset-y-0 flex items-center">
-                    <FaEnvelope className="ml-3" color="gray" size="20"/>
-                </div>
-            </div>
-            <div className="relative mt-3">
-                
-                <input
-                    className="appearance-none border pl-12 border-gray-100 shadow-sm focus:shadow-md focus:placeholder-gray-600  transition  rounded-md w-full py-3 text-gray-600 leading-tight focus:outline-none focus:ring-gray-600 focus:shadow-outline"
+        <PostFormField type="email" placeholder="Email" func={(e) => setEmail(e.target.value)} icon={<FaEnvelope className="ml-3" color="gray" size="20" />} />
+
+                <div>
+                  <div className="relative z-20">
+                    <div className="absolute right-0 inset-y-6 flex items-center" onClick={() => { seePasswords === "password" ? setSeePasswords("text") : setSeePasswords("password") }}>
+                      {seePasswords === "password" ?
+                        <FaEye className="mr-3" color="gray" size="20" />
+                        :
+                        <FaEyeSlash className="mr-3" color="gray" size="20" />
+                      }
+                    </div>
+                  </div>
+                  <PostFormField
                     type={seePasswords}
                     placeholder="Password"
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-                <div className="absolute left-0 inset-y-0 flex items-center">
-                    <FaUnlock className="ml-3" color="gray" size="20"/>
+                    func={(e) => setPassword(e.target.value)}
+                    icon={<FaUnlock className="ml-3" color="gray" size="20" />}
+                  />
                 </div>
-                <div className="absolute right-0 inset-y-0 flex items-center" onClick={() => {seePasswords === "password" ? setSeePasswords("text") : setSeePasswords("password")}}>
-                    { seePasswords === "password" ?
-                      <FaEye className="mr-3" color="gray" size="20"/>
-                      :
-                      <FaEyeSlash className="mr-3" color="gray" size="20"/>
-                    }
-                    
-                </div>
-            </div>
             <div className="flex items-center justify-center mt-4">
                 <button
                     className="text-gray-800 py-2 px-4 uppercase rounded bg-white hover:bg-gray-400 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
