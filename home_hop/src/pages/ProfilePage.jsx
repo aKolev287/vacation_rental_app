@@ -46,14 +46,7 @@ const ProfilePage = () => {
     );
     const data = await response.json();
     setPosts(data);
-    const arr = [];
-    data.map((r) =>  {
-      if(r.rating > 0){
-        arr.push(r.rating)
-      }
-    })
-    const b = arr.reduce((t, num) => t + num, 0)
-    setAvarageRating(b / arr.length);
+
   };
 
   useEffect(() => {
@@ -72,6 +65,29 @@ const ProfilePage = () => {
       fetchComments();
     }
   }, [checkAuthentication, authCheckComplete]);
+
+  useEffect(() => {
+    if (posts && posts.length > 0) {
+      const arr = [];
+      posts.map((r) => {
+        if (r.rating > 0) {
+          arr.push(r.rating);
+        }
+      });
+    
+      if (arr.length > 0) {
+        const totalRating = arr.reduce((t, num) => t + num, 0);
+        const averageRating = totalRating / arr.length;
+        setAvarageRating(averageRating);
+      } else {
+        // Handle the case where there are no ratings
+        setAvarageRating(0);
+      }
+    } else {
+      // Handle the case where posts is undefined or empty
+      setAvarageRating(0);
+    }
+  })
 
   if (!authCheckComplete) {
     return <p>Loading...</p>;
@@ -109,7 +125,9 @@ const ProfilePage = () => {
 
                       <div className="mt-7">
                         <div className="flex items-center">
-                          <p className="text-2xl font-bold mr-1">{avarageRating}</p>{" "}
+                          <p className="text-2xl font-bold mr-1">
+                            {avarageRating}
+                          </p>{" "}
                           <FaStar color="orange" size="17" />
                         </div>
                         <p className="text-base">Avarage Rating</p>
@@ -124,13 +142,22 @@ const ProfilePage = () => {
                   </div>
                 </div>
                 <div className="h-full flex justify-center ml-80 max-sm:ml-0 mt-10 ">
-                  <Link className="" to="/create_offer">
+                  <div className="flex flex-col">
+                  <Link className="" to={`/reservation/${user.username}`}>
                     <div className="h-68 max-h-80 w-96 max-sm:w-80 rounded-xl p-5 card-shadow text-center bg-gray-800 hover:bg-gray-600">
-                      <h3 className="font-bold text-xl text-white">
-                        Create a new offer
-                      </h3>
+                      <p className="font-bold text-xl text-white">
+                        Incloming reservations
+                      </p>
                     </div>
                   </Link>
+                  <Link className="mt-3" to="/create_offer">
+                    <div className="h-68 max-h-80 w-96 max-sm:w-80 rounded-xl p-5 card-shadow text-center bg-gray-800 hover:bg-gray-600">
+                      <p className="font-bold text-xl text-white">
+                        Create a new offer
+                      </p>
+                    </div>
+                  </Link>
+                  </div>
                 </div>
               </div>
 

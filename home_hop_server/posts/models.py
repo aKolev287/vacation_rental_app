@@ -18,7 +18,8 @@ class Post(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField(default=None, blank=True)
 
-    image = models.ImageField(upload_to='post_pics/', blank=True, default='default/te.jpg')
+    image = models.ImageField(upload_to='post_pics/',
+                              blank=True, default='default/te.jpg')
     guests = models.IntegerField(default=1)
     rating = models.FloatField(default=0)
 
@@ -43,13 +44,14 @@ class Post(models.Model):
             average = total_rating / len(reviews)
             return round(average, 2)  # Round to 2 decimal places
         return 0  # Default rating if there are no reviews
-    
+
     def __str__(self):
         return self.title
-    
+
 
 class Comment(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
+    post = models.ForeignKey(
+        Post, on_delete=models.CASCADE, related_name='comments')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     review = models.IntegerField(default=1)
     comment = models.TextField()
@@ -57,3 +59,14 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'{self.user} - {self.post}'
+
+
+class Reserve(models.Model):
+    post = models.ForeignKey(
+        Post, on_delete=models.CASCADE, related_name='reservation')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    check_in = models.CharField(max_length=200)
+    check_out = models.CharField(max_length=200)
+    guests = models.IntegerField(default=1)
+    days = models.IntegerField()
+    price = models.IntegerField()

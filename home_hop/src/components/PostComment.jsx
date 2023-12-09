@@ -22,14 +22,17 @@ const PostComment = ({ post, fn }) => {
     }
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/posts/${post}/comments/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({ comment, review, post }),
-      });
+      const response = await fetch(
+        `http://127.0.0.1:8000/posts/${post}/comments/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({ comment, review, post }),
+        }
+      );
 
       if (response.ok) {
         fn();
@@ -37,7 +40,6 @@ const PostComment = ({ post, fn }) => {
       }
     } catch (err) {
       if (err) throw err;
-      console.error("Server error");
     }
   };
 
@@ -79,19 +81,26 @@ const PostComment = ({ post, fn }) => {
             placeholder="Comment"
             onChange={(e) => setComment(e.target.value)}
           />
-          {error && <p className="text-red-500">{error}</p>} 
+          {error && <p className="text-red-500">{error}</p>}
           <div className="flex gap-3 justify-end mx-3">
-            <button className="bg-red-600 text-white py-2 px-5 rounded-xl font-semibold" onClick={cancel}>
+            <button
+              className="bg-red-600 text-white py-2 px-5 rounded-xl font-semibold"
+              onClick={cancel}
+            >
               Cancel
             </button>
-            <button className="bg-gray-900 text-white py-2 px-5 rounded-xl font-semibold" onClick={sendReview}>
+            <button
+              className="bg-gray-900 text-white py-2 px-5 rounded-xl font-semibold"
+              onClick={sendReview}
+            >
               Post
             </button>
           </div>
         </>
       ) : (
         <p className="text-lg font-semibold">
-          Please <Link className="text-gray-500 underline" to="/login">
+          Please{" "}
+          <Link className="text-gray-500 underline" to="/login">
             Login
           </Link>{" "}
           or{" "}

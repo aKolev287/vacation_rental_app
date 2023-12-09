@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import RegisterView, LoginView, UserView, LogoutView, UserListView, UpdateView, DeleteView,HostStatsView ,profile_details, host_details
+from .views import RegisterView, LoginView, UserView, LogoutView, UserListView, UpdateView, DeleteView, HostStatsView, profile_details, host_details
 from django.conf import settings
 from django.conf.urls.static import static
 

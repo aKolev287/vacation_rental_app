@@ -1,14 +1,11 @@
 from django.shortcuts import get_object_or_404
 import jwt
-import datetime
-from django.conf import settings
 from rest_framework import generics, status
-from .models import Post, User, Comment
-from .serializers import PostSerializer, CommentSerializer
+from .models import Post, User, Comment, Reserve
+from .serializers import PostSerializer, CommentSerializer, ReserveSerializer
 from rest_framework.response import Response
-from rest_framework.views import APIView
-from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.decorators import api_view
+from rest_framework.views import APIView
 from home_hop_server.conf import MainPagination
 from .filters import PostFilter
 from django_filters.rest_framework import DjangoFilterBackend
@@ -29,6 +26,32 @@ class PostListView(generics.ListAPIView):
             post.save()
         return queryset
 
+@api_view(['GET', 'POST'])
+def reservation(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
+
+    if request.method == 'GET':
+        reserve = Reserve.objects.filter(post=post)
+        serializer = ReserveSerializer(reserve, many=True)
+        return Response(serializer.data)
+
+    elif request.method == 'POST':
+        token = request.COOKIES.get('jwt')
+        try:
+            payload = jwt.decode(token, 'secret', algorithms=['HS256'])
+            user = User.objects.get(id=payload['id'])
+        except jwt.ExpiredSignatureError:
+            return Response({"error": "Token has expired"}, status=status.HTTP_401_UNAUTHORIZED)
+        except jwt.InvalidTokenError:
+            return Response({"error": "Invalid token"}, status=status.HTTP_401_UNAUTHORIZED)
+        except User.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = ReserveSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(post=post, user=user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
 def post_details(request, id):
@@ -117,11 +140,9 @@ def check_post(request, by_user):
 
     posts = Post.objects.filter(by_user=by_user)
     
-    # Assuming average_rating is a method in your Post model
     for post in posts:
         post.rating = post.average_rating()
 
-    # Serialize each post individually
     serialized_posts = [PostSerializer(post).data for post in posts]
 
     return Response(serialized_posts)
@@ -131,7 +152,7 @@ def check_reviews(request):
     token = request.COOKIES.get('jwt')
     payload = jwt.decode(token, 'secret', algorithms=['HS256'])
     user = User.objects.filter(id=payload['id']).first()
-    review = Comment.objects.filter(user=user) # Get the last 5 reviews
+    review = Comment.objects.filter(user=user)
 
     serializer = CommentSerializer(review, many=True)
 
@@ -144,11 +165,9 @@ def check_user_post(request):
     user = User.objects.filter(id=payload['id']).first()
     posts = Post.objects.filter(by_user=user)
     
-    # Assuming average_rating is a method in your Post model
     for post in posts:
         post.rating = post.average_rating()
 
-    # Serialize each post individually
     serialized_posts = [PostSerializer(post).data for post in posts]
 
     return Response(serialized_posts)
@@ -156,26 +175,24 @@ def check_user_post(request):
 
 @api_view(['PATCH'])
 def update_post(request, post_id):
-    # Extract user information from JWT token
+
     token = request.COOKIES.get('jwt')
     payload = jwt.decode(token, 'secret', algorithms=['HS256'])
     user = User.objects.filter(id=payload['id']).first()
 
-    # Retrieve the post to be updated
     post = Post.objects.filter(id=post_id, by_user=user.username).first()
 
     if not post:
         return Response({'error': 'Post not found or you do not have permission to update this post.'}, status=404)
 
-    # Check if the user making the request is the same as the one who created the post
     if post.by_user != user.username:
         return Response({'error': 'You do not have permission to update this post.'}, status=403)
 
-    # Serialize the existing post data
+
     serialized_post = PostSerializer(post, data=request.data, partial=True)
 
     if serialized_post.is_valid():
-        # Save the updated post
+
         serialized_post.save()
         return Response({'message': 'Post updated successfully'})
     else:
@@ -184,22 +201,16 @@ def update_post(request, post_id):
 
 @api_view(['DELETE'])
 def delete_post(request, post_id):
-    # Extract user information from JWT token
     token = request.COOKIES.get('jwt')
     payload = jwt.decode(token, 'secret', algorithms=['HS256'])
     user = User.objects.filter(id=payload['id']).first()
-
-    # Retrieve the post to be deleted
     post = Post.objects.filter(id=post_id, by_user=user.username).first()
-
     if not post:
         return Response({'error': 'Post not found or you do not have permission to delete this post.'}, status=404)
 
-    # Check if the user making the request is the same as the one who created the post
     if post.by_user != user.username:
         return Response({'error': 'You do not have permission to delete this post.'}, status=403)
 
-    # Delete the post
     post.delete()
 
     return Response({'message': 'Post deleted successfully'})

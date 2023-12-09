@@ -15,15 +15,7 @@ const UserPage = () => {
     );
     const data = await response.json();
     setPosts(data);
-    const arr = [];
-    data.map((r) => {
-      if (r.rating > 0) {
-        arr.push(r.rating);
-      }
-    });
-    const b = arr.reduce((t, num) => t + num, 0);
-    setAvarageRating(b / arr.length);
-  };
+  }
   useEffect(() => {
     const fetchUserProfile = async () => {
       const response = await fetch(
@@ -44,6 +36,29 @@ const UserPage = () => {
     fetchPosts();
   }, [username]);
 
+  useEffect(() => {
+    if (posts && posts.length > 0) {
+      const arr = [];
+      posts.map((r) => {
+        if (r.rating > 0) {
+          arr.push(r.rating);
+        }
+      });
+    
+      if (arr.length > 0) {
+        const totalRating = arr.reduce((t, num) => t + num, 0);
+        const averageRating = totalRating / arr.length;
+        setAvarageRating(averageRating);
+      } else {
+        // Handle the case where there are no ratings
+        setAvarageRating(0);
+      }
+    } else {
+      // Handle the case where posts is undefined or empty
+      setAvarageRating(0);
+    }
+  })
+  
   return (
     <div className="grid grid-cols-2 max-sm:grid-cols-1 grid-rows-1">
       {user ? (
@@ -120,7 +135,9 @@ const UserPage = () => {
             </div>
           </div>
         </>
-      ) :  <p>Loading....</p>}
+      ) : (
+        <p>Loading....</p>
+      )}
     </div>
   );
 };

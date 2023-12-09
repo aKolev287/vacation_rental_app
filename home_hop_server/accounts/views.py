@@ -124,6 +124,7 @@ class UserListView(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+
 class HostStatsView(APIView):
     def get(self, request):
         token = request.COOKIES.get('jwt')
@@ -140,6 +141,7 @@ class HostStatsView(APIView):
         serializer = HostSerializer(user)
         return Response(serializer.data)
 
+
 @api_view(['GET'])
 def profile_details(request, username):
     try:
@@ -148,11 +150,12 @@ def profile_details(request, username):
         r_user = User.objects.filter(id=payload['id']).first()
         user = User.objects.get(username=username)
         print(f"user: {r_user}")
-        
+
         serializer = UserSerializer(user)
         return Response(serializer.data)
     except User.DoesNotExist:
         return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
 
 @api_view(['GET'])
 def host_details(request, username):
@@ -162,7 +165,7 @@ def host_details(request, username):
         r_user = User.objects.filter(id=payload['id']).first()
         print(f"user: {r_user}")
 
-        z_user = User.objects.filter(username=username).first() 
+        z_user = User.objects.filter(username=username).first()
         user = Host.objects.get(user=z_user.id)
 
         serializer = HostSerializer(user)
